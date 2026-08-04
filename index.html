@@ -9,68 +9,68 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23090a10'/><rect x='4' y='4' width='56' height='56' rx='10' fill='%2312141c' stroke='%2300ffff' stroke-width='4'/><path d='M16 22h32v20H16z' fill='%23eaea00' stroke='%23000000' stroke-width='2'/><path d='M20 30h8v4h-8zM22 28h4v8h-4z' fill='%23000000'/><circle cx='40' cy='30' r='3' fill='%23ff5722'/><circle cx='45' cy='34' r='3' fill='%23ffabf3'/><rect x='8' y='8' width='6' height='6' fill='%2300ffff'/><rect x='50' y='8' width='6' height='6' fill='%2300ffff'/><rect x='8' y='50' width='6' height='6' fill='%2300ffff'/><rect x='50' y='50' width='6' height='6' fill='%2300ffff'/></svg>" />
   <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23090a10'/><rect x='4' y='4' width='56' height='56' rx='10' fill='%2312141c' stroke='%2300ffff' stroke-width='4'/><path d='M16 22h32v20H16z' fill='%23eaea00' stroke='%23000000' stroke-width='2'/><path d='M20 30h8v4h-8zM22 28h4v8h-4z' fill='%23000000'/><circle cx='40' cy='30' r='3' fill='%23ff5722'/><circle cx='45' cy='34' r='3' fill='%23ffabf3'/></svg>" />
   
-  <script id="tailwind-config">
-    tailwind = {
-      config: {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              "background": "#090a10",
-              "surface": "#121414",
-              "surface-dim": "#121414",
-              "surface-bright": "#37393a",
-              "surface-container-lowest": "#0c0f0f",
-              "surface-container-low": "#1a1c1c",
-              "surface-container": "#1e2020",
-              "surface-container-high": "#282a2b",
-              "surface-container-highest": "#333535",
-              "on-surface": "#e2e2e2",
-              "on-surface-variant": "#c8c5cf",
-              "primary": "#c3c2f2",
-              "primary-container": "#1a1a40",
-              "on-primary-container": "#8382af",
-              "secondary": "#ffffff",
-              "secondary-container": "#eaea00",
-              "on-secondary-container": "#686800",
-              "secondary-fixed": "#eaea00",
-              "tertiary": "#ffabf3",
-              "tertiary-container": "#3d003d",
-              "on-tertiary": "#5b005b",
-              "cyan-neon": "#00ffff",
-              "yellow-neon": "#eaea00",
-              "error": "#ffb4ab",
-              "error-container": "#93000a",
-              "on-error-container": "#ffdad6"
-            },
-            fontFamily: {
-              "headline": ["Space Grotesk", "sans-serif"],
-              "body-md": ["JetBrains Mono", "monospace"],
-              "label-sm": ["JetBrains Mono", "monospace"]
-            }
+  <!-- Tailwind CSS CDN (HARUS DIMUAT PERTAMA) -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  
+  <!-- Tailwind Config (HARUS SETELAH CDN DIMUAT) -->
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "background": "#090a10",
+            "on-background": "#e2e2e2",
+            "surface": "#121414",
+            "surface-dim": "#121414",
+            "surface-bright": "#37393a",
+            "surface-container-lowest": "#0c0f0f",
+            "surface-container-low": "#1a1c1c",
+            "surface-container": "#1e2020",
+            "surface-container-high": "#282a2b",
+            "surface-container-highest": "#333535",
+            "on-surface": "#e2e2e2",
+            "on-surface-variant": "#c8c5cf",
+            "primary": "#c3c2f2",
+            "primary-container": "#1a1a40",
+            "on-primary-container": "#8382af",
+            "secondary": "#ffffff",
+            "secondary-container": "#eaea00",
+            "on-secondary-container": "#686800",
+            "secondary-fixed": "#eaea00",
+            "tertiary": "#ffabf3",
+            "tertiary-container": "#3d003d",
+            "on-tertiary": "#5b005b",
+            "cyan-neon": "#00ffff",
+            "yellow-neon": "#eaea00",
+            "error": "#ffb4ab",
+            "error-container": "#93000a",
+            "on-error-container": "#ffdad6"
+          },
+          fontFamily: {
+            "headline": ["Space Grotesk", "sans-serif"],
+            "body-md": ["JetBrains Mono", "monospace"],
+            "label-sm": ["JetBrains Mono", "monospace"]
           }
         }
       }
     }
   </script>
-  
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
   
-  <!-- Firebase Web SDK Compat (Ultra-Reliable Synchronous Connection) -->
+  <!-- Firebase Web SDK Compat -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
   <!-- Custom Styling -->
   <link rel="stylesheet" href="css/styles.css" />
 </head>
-<body class="bg-background text-on-background font-body-md overflow-x-hidden min-h-screen">
+<body style="background-color:#090a10;color:#e2e2e2;" class="bg-background text-on-background font-body-md overflow-x-hidden min-h-screen">
 
   <!-- Unobtrusive Floating Route Switcher (Bottom Right Gear Button) -->
   <div class="fixed bottom-3 right-3 z-[500] flex flex-col items-end">
