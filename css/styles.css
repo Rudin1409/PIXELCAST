@@ -3,6 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
 :root {
+  --color-background: #090a10;
   --color-surface: #121414;
   --color-surface-dim: #121414;
   --color-surface-bright: #37393a;
@@ -23,14 +24,21 @@
   --color-error: #ffb4ab;
 }
 
-body {
+html, body {
   margin: 0;
   padding: 0;
   font-family: 'JetBrains Mono', monospace;
-  background-color: var(--color-surface);
-  color: var(--color-on-surface);
+  background-color: #090a10 !important;
+  color: #e2e2e2 !important;
   overflow-x: hidden;
   user-select: none;
+}
+
+.bg-background {
+  background-color: #090a10 !important;
+}
+.text-on-background {
+  color: #e2e2e2 !important;
 }
 
 h1, h2, h3, .font-headline {
