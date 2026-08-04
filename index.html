@@ -3,7 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>PixelCast - Insert Text to Play!</title>
+  <title>🎮 PixelCast - Insert Text to Play!</title>
+  
+  <!-- Retro 8-Bit Arcade Logo Favicon & Tab Icon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23090a10'/><rect x='4' y='4' width='56' height='56' rx='10' fill='%2312141c' stroke='%2300ffff' stroke-width='4'/><path d='M16 22h32v20H16z' fill='%23eaea00' stroke='%23000000' stroke-width='2'/><path d='M20 30h8v4h-8zM22 28h4v8h-4z' fill='%23000000'/><circle cx='40' cy='30' r='3' fill='%23ff5722'/><circle cx='45' cy='34' r='3' fill='%23ffabf3'/><rect x='8' y='8' width='6' height='6' fill='%2300ffff'/><rect x='50' y='8' width='6' height='6' fill='%2300ffff'/><rect x='8' y='50' width='6' height='6' fill='%2300ffff'/><rect x='50' y='50' width='6' height='6' fill='%2300ffff'/></svg>" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23090a10'/><rect x='4' y='4' width='56' height='56' rx='10' fill='%2312141c' stroke='%2300ffff' stroke-width='4'/><path d='M16 22h32v20H16z' fill='%23eaea00' stroke='%23000000' stroke-width='2'/><path d='M20 30h8v4h-8zM22 28h4v8h-4z' fill='%23000000'/><circle cx='40' cy='30' r='3' fill='%23ff5722'/><circle cx='45' cy='34' r='3' fill='%23ffabf3'/></svg>" />
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -132,7 +136,7 @@
         }
 
         if (hash === '#controller') {
-          document.title = "PixelCast - Controller (Insert Text to Play!)";
+          document.title = "🎮 PixelCast - HP Controller (Insert Text to Play!)";
           this.currentViewInstance = new window.ControllerView();
           this.currentViewInstance.render(this.appRoot);
         } else {
@@ -144,11 +148,11 @@
           }
 
           if (hash === '#admin') {
-            document.title = "PixelCast - Admin Command Center";
+            document.title = "🛡️ PixelCast - Admin Command Center";
             this.currentViewInstance = new window.AdminView();
             this.currentViewInstance.render(this.appRoot);
           } else {
-            document.title = "PixelCast - Main Stage Arena";
+            document.title = "📺 PixelCast - Main Stage Arena";
             this.currentViewInstance = new window.MainStageView();
             this.currentViewInstance.render(this.appRoot);
           }
