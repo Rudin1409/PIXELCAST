@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FESTIVAL REWIND IT 2026 - PANGGUNG UTAMA</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        .scanline-overlay {
+            background: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.1) 50%);
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .cursor-blink {
+            animation: blink 1s infinite steps(1);
+        }
+        @keyframes float-up {
+            0% { transform: translateY(100vh) scale(0.9); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-20vh) scale(1.1); opacity: 0; }
+        }
+        .animate-float {
+            animation: float-up var(--duration) linear infinite;
+            animation-delay: var(--delay);
+        }
+        @keyframes star-pulse {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+            50% { transform: scale(1.2) rotate(90deg); opacity: 1; }
+        }
+        .star-ornament {
+            animation: star-pulse 3s infinite ease-in-out;
+        }
+        .brutal-shadow {
+            box-shadow: 8px 8px 0px 0px rgba(0,0,0,1);
+        }
+        .brutal-shadow-sm {
+            box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
+        }
+        .pixel-border {
+            border: 4px solid #e2e2e2;
+            position: relative;
+        }
+        .pixel-border::after {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border: 4px solid #121414;
+            pointer-events: none;
+            z-index: -1;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#17173d",
+                        "tertiary": "#ffabf3",
+                        "inverse-on-surface": "#2f3131",
+                        "outline-variant": "#47464e",
+                        "on-secondary-fixed": "#1d1d00",
+                        "surface-container-low": "#1a1c1c",
+                        "on-primary": "#2c2c53",
+                        "inverse-primary": "#5a5a84",
+                        "on-secondary-fixed-variant": "#494900",
+                        "on-error": "#690005",
+                        "surface-bright": "#37393a",
+                        "tertiary-fixed-dim": "#ffabf3",
+                        "secondary-container": "#eaea00",
+                        "surface-container-high": "#282a2b",
+                        "on-error-container": "#ffdad6",
+                        "primary-container": "#1a1a40",
+                        "surface-dim": "#121414",
+                        "secondary-fixed": "#eaea00",
+                        "inverse-surface": "#e2e2e2",
+                        "on-surface": "#e2e2e2",
+                        "outline": "#918f99",
+                        "primary": "#c3c2f2",
+                        "on-primary-container": "#8382af",
+                        "tertiary-fixed": "#ffd7f5",
+                        "on-tertiary-fixed": "#380038",
+                        "on-secondary-container": "#686800",
+                        "surface-container-highest": "#333535",
+                        "on-background": "#e2e2e2",
+                        "secondary": "#ffffff",
+                        "tertiary-container": "#3d003d",
+                        "on-secondary": "#323200",
+                        "on-tertiary": "#5b005b",
+                        "on-surface-variant": "#c8c5cf",
+                        "surface-tint": "#c3c2f2",
+                        "on-tertiary-fixed-variant": "#810081",
+                        "primary-fixed-dim": "#c3c2f2",
+                        "background": "#121414",
+                        "secondary-fixed-dim": "#cdcd00",
+                        "primary-fixed": "#e2dfff",
+                        "surface": "#121414",
+                        "on-tertiary-container": "#ec00ec",
+                        "surface-container": "#1e2020",
+                        "error-container": "#93000a",
+                        "surface-variant": "#333535"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "gutter": "16px",
+                        "margin-desktop": "40px",
+                        "margin-mobile": "16px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Space Grotesk"],
+                        "headline-xl": ["Space Grotesk"],
+                        "label-sm": ["JetBrains Mono"],
+                        "body-lg": ["JetBrains Mono"],
+                        "body-md": ["JetBrains Mono"],
+                        "display-lg": ["Space Grotesk"],
+                        "headline-lg": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "1", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "1.5", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "display-lg": ["72px", {"lineHeight": "1.1", "letterSpacing": "-0.05em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-hidden selection:bg-tertiary selection:text-on-tertiary">
+<!-- Top AppBar -->
+<header class="bg-background dark:bg-background text-primary font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg fixed top-0 w-full z-50 border-b-4 border-on-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex justify-between items-center px-gutter h-16">
+<div class="font-headline-lg-mobile text-headline-lg-mobile italic tracking-tighter text-secondary bg-primary px-2 border-b-4 border-r-4 border-on-background">
+        FESTIVAL REWIND IT 2026
+    </div>
+<div class="hidden md:flex gap-8 items-center">
+<nav class="flex gap-6">
+<a class="text-tertiary underline underline-offset-4 font-label-sm uppercase tracking-widest transition-all hover:translate-x-[2px] hover:translate-y-[2px]" href="#">SALURAN</a>
+<a class="text-on-surface font-label-sm uppercase tracking-widest transition-all hover:translate-x-[2px] hover:translate-y-[2px]" href="#">PEMAIN</a>
+<a class="text-on-surface font-label-sm uppercase tracking-widest transition-all hover:translate-x-[2px] hover:translate-y-[2px]" href="#">MISI</a>
+<a class="text-on-surface font-label-sm uppercase tracking-widest transition-all hover:translate-x-[2px] hover:translate-y-[2px]" href="#">BRANKAS</a>
+</nav>
+<div class="flex gap-4">
+<span class="material-symbols-outlined cursor-pointer hover:text-tertiary transition-colors">account_circle</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-tertiary transition-colors">settings</span>
+</div>
+</div>
+</header>
+<!-- Main Stage Canvas -->
+<main class="flex h-screen pt-16 overflow-hidden">
+<!-- Left: Join the Game Zone (25%) -->
+<section class="w-1/4 h-full bg-surface-container-low border-r-4 border-on-background p-8 flex flex-col items-center justify-center gap-10 relative">
+<!-- Scanline Overlay -->
+<div class="absolute inset-0 scanline-overlay z-0 opacity-20"></div>
+<div class="z-10 w-full text-center">
+<h2 class="font-headline-lg text-headline-lg text-secondary-fixed mb-6 tracking-tight leading-none bg-on-background text-background inline-block px-4 py-2 border-r-4 border-b-4 border-tertiary">
+                PINDAI UNTUK MAIN!
+            </h2>
+<div class="bg-secondary p-4 pixel-border brutal-shadow inline-block">
+<div class="w-48 h-48 bg-background flex items-center justify-center relative">
+<!-- Simulated QR Code -->
+<div class="grid grid-cols-8 grid-rows-8 gap-1 w-40 h-40">
+<script>
+                            document.currentScript.parentElement.innerHTML = Array.from({length: 64}, () => 
+                                `<div class="bg-on-background ${Math.random() > 0.5 ? 'opacity-100' : 'opacity-0'}"></div>`
+                            ).join('');
+                        </script>
+</div>
+<div class="absolute inset-0 border-4 border-primary pointer-events-none"></div>
+</div>
+</div>
+</div>
+<div class="z-10 w-full flex flex-col items-center gap-4">
+<!-- Loading Animation -->
+<div class="w-4/5 h-8 bg-surface-container border-4 border-on-background p-1 flex gap-1">
+<div class="h-full w-2 bg-tertiary animate-[pulse_1s_infinite]"></div>
+<div class="h-full w-2 bg-tertiary animate-[pulse_1.1s_infinite]"></div>
+<div class="h-full w-2 bg-tertiary animate-[pulse_1.2s_infinite]"></div>
+<div class="h-full w-2 bg-surface opacity-30"></div>
+<div class="h-full w-2 bg-surface opacity-30"></div>
+<div class="h-full w-2 bg-surface opacity-30"></div>
+</div>
+<div class="font-label-sm text-on-surface-variant flex items-center gap-2">
+<span class="text-tertiary">STATUS SISTEM:</span>
+<span class="text-secondary uppercase">Memuat...</span>
+<span class="w-2 h-4 bg-secondary cursor-blink"></span>
+</div>
+<div class="mt-8 bg-primary-container border-2 border-on-background p-4 w-full brutal-shadow-sm">
+<div class="font-label-sm text-primary flex justify-between">
+<span>PEMAIN TERHUBUNG:</span>
+<span class="text-secondary font-bold">128</span>
+</div>
+</div>
+</div>
+<!-- Background Ornaments -->
+<div class="absolute bottom-8 right-8 star-ornament text-secondary opacity-20 select-none pointer-events-none">
+<span class="material-symbols-outlined text-4xl">star</span>
+</div>
+</section>
+<!-- Right: Live Chat Arena (75%) -->
+<section class="w-3/4 h-full bg-primary-container relative overflow-hidden flex flex-col">
+<!-- Chat Arena Overlay -->
+<div class="relative z-10 w-full h-full p-12">
+<!-- Floating Chat Bubbles -->
+<div class="relative w-full h-full" id="chat-arena">
+<!-- BOOM Highlight Message -->
+<div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none">
+<div class="bg-secondary-container text-on-secondary-container border-4 border-on-background p-8 brutal-shadow relative animate-bounce">
+<div class="absolute -top-12 -left-12 rotate-[-15deg] bg-error text-on-error font-headline-lg p-2 border-4 border-on-background">DOR!</div>
+<div class="font-headline-lg text-center uppercase">PLAYER_X7: "GG EZ MANTEP BANGET!"</div>
+<div class="absolute -bottom-8 -right-8 w-12 h-12 bg-on-background rotate-45"></div>
+</div>
+</div>
+<!-- RPG Dialog Boxes (Floating) -->
+<div class="chat-stream flex flex-col items-start gap-8">
+<!-- Message 1 -->
+<div class="animate-float" style="--duration: 8s; --delay: 0s; position: absolute; left: 10%;">
+<div class="bg-secondary text-background p-4 border-4 border-on-background brutal-shadow-sm max-w-xs relative">
+<div class="font-label-sm text-tertiary-container mb-1">NOOB_SLAYER_99</div>
+<div class="font-body-md">SIAPA MAU RAID BARENG?</div>
+<div class="absolute bottom-1 right-1 material-symbols-outlined text-xs animate-bounce">arrow_drop_down</div>
+</div>
+</div>
+<!-- Message 2 -->
+<div class="animate-float" style="--duration: 12s; --delay: 2s; position: absolute; left: 60%;">
+<div class="bg-secondary text-background p-4 border-4 border-on-background brutal-shadow-sm max-w-xs relative">
+<div class="font-label-sm text-tertiary-container mb-1">CYBER_PHANTOM</div>
+<div class="font-body-md">LAGNYA PARAH BANGET HARI INI WKWK</div>
+</div>
+</div>
+<!-- Message 3 -->
+<div class="animate-float" style="--duration: 10s; --delay: 5s; position: absolute; left: 30%;">
+<div class="bg-secondary text-background p-4 border-4 border-on-background brutal-shadow-sm max-w-xs relative">
+<div class="font-label-sm text-tertiary-container mb-1">DEV_MASTER</div>
+<div class="font-body-md">UPDATE SERVER BAKAL ADA JAM 23:00</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Background Ornaments -->
+<div class="absolute top-10 left-10 star-ornament text-secondary text-2xl opacity-40">
+<span class="material-symbols-outlined">hotel_class</span>
+</div>
+<div class="absolute bottom-20 right-20 star-ornament text-tertiary text-6xl opacity-30" style="animation-delay: 1.5s">
+<span class="material-symbols-outlined">stars</span>
+</div>
+<div class="absolute top-1/4 right-1/3 text-secondary-fixed opacity-10 rotate-12 scale-150">
+<span class="material-symbols-outlined" style="font-size: 120px;">videogame_asset</span>
+</div>
+<div class="absolute bottom-10 left-1/4 text-tertiary-fixed opacity-10 -rotate-12 scale-150">
+<span class="material-symbols-outlined" style="font-size: 80px;">trophy</span>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar (Mobile only) -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full h-20 flex justify-around items-center px-4 pb-safe bg-primary-container dark:bg-primary-container border-t-4 border-on-background shadow-[0px_-4px_0px_0px_rgba(0,0,0,1)] z-50">
+<div class="flex flex-col items-center justify-center text-on-primary-container hover:text-secondary transition-colors">
+<span class="material-symbols-outlined">forum</span>
+<span class="font-label-sm text-label-sm font-bold uppercase">OBROLAN</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-primary-container hover:text-secondary transition-colors">
+<span class="material-symbols-outlined">map</span>
+<span class="font-label-sm text-label-sm font-bold uppercase">PETA</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-secondary text-on-secondary border-2 border-on-background scale-110 -translate-y-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] px-4 py-1">
+<span class="material-symbols-outlined">storefront</span>
+<span class="font-label-sm text-label-sm font-bold uppercase">TOKO</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-primary-container hover:text-secondary transition-colors">
+<span class="material-symbols-outlined">menu</span>
+<span class="font-label-sm text-label-sm font-bold uppercase">MENU</span>
+</div>
+</nav>
+<!-- Arcade Ornaments & HUD -->
+<div class="fixed top-20 right-8 z-40 flex flex-col gap-4 pointer-events-none">
+<div class="bg-background border-4 border-tertiary p-2 brutal-shadow-sm animate-[pulse_2s_infinite]">
+<div class="font-label-sm text-tertiary">TAHAP SAAT INI</div>
+<div class="font-headline-lg text-secondary uppercase">PERTARUNGAN BOSS 01</div>
+</div>
+</div>
+<script>
+    // Micro-interactions for chat
+    const arena = document.getElementById('chat-arena');
+    const users = ['PIXEL_LORD', 'GLITCH_GIRL', 'RETRO_RUNNER', 'VOX_HUNTER'];
+    const messages = [
+        'GASKEUNNN!', 
+        'DI MANA-MANA ADA CAMPER EUY', 
+        'SKIN LU KEREN BRO', 
+        'KEOK!', 
+        'HACKER NIH!!!', 
+        'ADA YANG PUNYA KUNCINYA GAK?'
+    ];
+
+    function spawnMessage() {
+        const div = document.createElement('div');
+        div.className = 'animate-float absolute';
+        div.style.setProperty('--duration', (Math.random() * 5 + 8) + 's');
+        div.style.setProperty('--delay', '0s');
+        div.style.left = (Math.random() * 80 + 5) + '%';
+        
+        const user = users[Math.floor(Math.random() * users.length)];
+        const msg = messages[Math.floor(Math.random() * messages.length)];
+        
+        div.innerHTML = `
+            <div class="bg-secondary text-background p-4 border-4 border-on-background brutal-shadow-sm max-w-xs relative">
+                <div class="font-label-sm text-tertiary-container mb-1">${user}</div>
+                <div class="font-body-md">${msg}</div>
+            </div>
+        `;
+        
+        arena.appendChild(div);
+        setTimeout(() => div.remove(), 15000);
+    }
+
+    setInterval(spawnMessage, 3000);
+</script>
+</body></html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html class="dark" lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>PixelCast - Insert Text to Play!</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  
+  <!-- Firebase Web SDK Compat (Ultra-Reliable Synchronous Connection) -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+  <!-- Socket.io client (fallback if running Node server) -->
+  <script src="/socket.io/socket.io.js" onerror="console.log('Socket.io server offline, fallback to BroadcastChannel/Firebase')"></script>
+  
+  <!-- Custom Styling -->
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface": "#121414",
+            "surface-dim": "#121414",
+            "surface-bright": "#37393a",
+            "surface-container-lowest": "#0c0f0f",
+            "surface-container-low": "#1a1c1c",
+            "surface-container": "#1e2020",
+            "surface-container-high": "#282a2b",
+            "surface-container-highest": "#333535",
+            "on-surface": "#e2e2e2",
+            "on-surface-variant": "#c8c5cf",
+            "primary": "#c3c2f2",
+            "primary-container": "#1a1a40",
+            "on-primary-container": "#8382af",
+            "secondary": "#ffffff",
+            "secondary-container": "#eaea00",
+            "on-secondary-container": "#686800",
+            "secondary-fixed": "#eaea00",
+            "tertiary": "#ffabf3",
+            "tertiary-container": "#3d003d",
+            "on-tertiary": "#5b005b",
+            "cyan-neon": "#00ffff",
+            "yellow-neon": "#eaea00",
+            "error": "#ffb4ab",
+            "error-container": "#93000a",
+            "on-error-container": "#ffdad6"
+          },
+          fontFamily: {
+            "headline": ["Space Grotesk", "sans-serif"],
+            "body-md": ["JetBrains Mono", "monospace"],
+            "label-sm": ["JetBrains Mono", "monospace"]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden min-h-screen">
+
+  <!-- Unobtrusive Floating Route Switcher (Bottom Right Gear Button) -->
+  <div class="fixed bottom-3 right-3 z-[500] flex flex-col items-end">
+    <button id="toggle-route-menu" class="w-10 h-10 rounded-full bg-black border-2 border-tertiary text-tertiary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-tertiary hover:text-black transition-all flex items-center justify-center font-bold" title="Tukar Layar (Testing)">
+      <span class="material-symbols-outlined text-lg">swap_horiz</span>
+    </button>
+    <div id="route-menu-dropdown" class="hidden mb-2 bg-background border-4 border-on-background p-3 shadow-[8px_8px_0px_0px_rgba(255,171,243,1)] flex flex-col gap-2 min-w-[220px]">
+      <div class="text-[10px] font-label-sm text-tertiary font-bold border-b border-on-background/40 pb-1 uppercase">PILIH TAMPILAN PIXELCAST:</div>
+      <a href="#stage" class="px-2.5 py-1.5 bg-surface-container text-white border-2 border-on-background hover:bg-tertiary hover:text-black text-xs font-bold flex items-center gap-2">
+        <span>📺</span> LAYAR PROYEKTOR (#stage)
+      </a>
+      <a href="#controller" class="px-2.5 py-1.5 bg-surface-container text-white border-2 border-on-background hover:bg-tertiary hover:text-black text-xs font-bold flex items-center gap-2">
+        <span>📱</span> HP PESERTA (#controller)
+      </a>
+      <a href="#admin" class="px-2.5 py-1.5 bg-surface-container text-white border-2 border-on-background hover:bg-tertiary hover:text-black text-xs font-bold flex items-center gap-2">
+        <span>🛡️</span> DASHBOARD ADMIN (#admin)
+      </a>
+    </div>
+  </div>
+
+  <!-- App Mount Root -->
+  <div id="app-root" class="w-full min-h-screen"></div>
+
+  <!-- JavaScript Modules -->
+  <script src="js/audio.js"></script>
+  <script src="js/firebase.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/controller.js"></script>
+  <script src="js/admin.js"></script>
+  <script src="js/stage.js"></script>
+  
+  <script>
+    class AppRouter {
+      constructor() {
+        this.currentViewInstance = null;
+        this.appRoot = document.getElementById('app-root');
+        window.addEventListener('hashchange', () => this.handleRoute());
+        this.handleRoute();
+        this.bindRouteMenu();
+      }
+
+      bindRouteMenu() {
+        const btn = document.getElementById('toggle-route-menu');
+        const dropdown = document.getElementById('route-menu-dropdown');
+        if (btn && dropdown) {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdown.classList.toggle('hidden');
+          });
+          document.addEventListener('click', () => {
+            dropdown.classList.add('hidden');
+          });
+        }
+      }
+
+      handleRoute() {
+        const hash = window.location.hash || '#controller';
+        const dropdown = document.getElementById('route-menu-dropdown');
+        if (dropdown) dropdown.classList.add('hidden');
+
+        if (this.currentViewInstance && typeof this.currentViewInstance.destroy === 'function') {
+          this.currentViewInstance.destroy();
+        }
+
+        if (hash === '#controller') {
+          document.title = "PixelCast - Controller (Insert Text to Play!)";
+          this.currentViewInstance = new window.ControllerView();
+          this.currentViewInstance.render(this.appRoot);
+        } else {
+          // Baik #admin maupun #stage membutuhkan PIN Keamanan Panitia Operator
+          const isAuthed = sessionStorage.getItem('pixelcast_admin_authed') === 'true';
+          if (!isAuthed) {
+            this.promptAdminPIN(hash);
+            return;
+          }
+
+          if (hash === '#admin') {
+            document.title = "PixelCast - Admin Command Center";
+            this.currentViewInstance = new window.AdminView();
+            this.currentViewInstance.render(this.appRoot);
+          } else {
+            document.title = "PixelCast - Main Stage Arena";
+            this.currentViewInstance = new window.MainStageView();
+            this.currentViewInstance.render(this.appRoot);
+          }
+        }
+      }
+
+      promptAdminPIN(targetHash) {
+        const correctPIN = localStorage.getItem('pixelcast_admin_pin') || '1234';
+        const pageTitle = targetHash === '#admin' ? 'DASHBOARD ADMIN' : 'LAYAR PANGGUNG UTAMA';
+        this.appRoot.innerHTML = `
+          <div class="fixed inset-0 bg-[#06070c] z-[999] flex items-center justify-center p-6 scanline-overlay">
+            <div class="bg-surface-container border-4 border-on-background p-6 md:p-8 max-w-md w-full shadow-[8px_8px_0px_0px_rgba(255,171,243,1)] flex flex-col gap-4 text-center animate-[popIn_0.3s_ease-out]">
+              
+              <div class="w-14 h-14 rounded-full bg-yellow-neon text-black border-2 border-black mx-auto flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                <span class="material-symbols-outlined text-3xl">lock</span>
+              </div>
+
+              <div>
+                <h2 class="font-headline text-xl font-bold uppercase text-yellow-neon tracking-wide">AKSES ${pageTitle} DILINDUNGI PIN</h2>
+                <p class="text-xs text-on-surface-variant font-label-sm mt-1">Masukkan PIN Keamanan Operator Panitia untuk mengontrol ${pageTitle}.</p>
+              </div>
+
+              <form id="pin-form" class="flex flex-col gap-4 mt-2">
+                <div class="relative">
+                  <input id="pin-input" type="password" maxlength="8" placeholder="Ketik PIN Admin..." autocomplete="off" class="w-full bg-[#0c0d14] border-2 border-cyan-neon p-3 text-center text-xl font-mono font-extrabold text-cyan-neon tracking-widest focus:outline-none focus:border-yellow-neon placeholder:text-gray-600 uppercase" autofocus />
+                </div>
+
+                <div id="pin-error" class="hidden text-xs font-mono font-bold text-error bg-red-950/80 border border-red-500 p-2">
+                  ❌ PIN SALAH! AKSES DITOLAK!
+                </div>
+
+                <div class="flex flex-col gap-2">
+                  <button type="submit" class="w-full py-3 bg-cyan-neon text-black font-label-sm text-xs font-extrabold uppercase border-2 border-on-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-cyan-300 active:scale-95 transition-all cursor-pointer">
+                    🔑 MASUK PUSAT KOMANDO
+                  </button>
+                  <a href="#controller" class="w-full py-2 bg-surface-container-high text-on-surface font-label-sm text-xs font-bold uppercase border-2 border-on-background hover:bg-surface-variant transition-all">
+                    ✖ KEMBALI KE HP PESERTA
+                  </a>
+                </div>
+              </form>
+
+              <div class="text-[10px] text-gray-500 font-mono italic border-t border-on-background/20 pt-2">
+                *Default PIN Operator: 1234 (Dapat diubah di Pengaturan Admin)
+              </div>
+            </div>
+          </div>
+        `;
+
+        const form = document.getElementById('pin-form');
+        const input = document.getElementById('pin-input');
+        const errDiv = document.getElementById('pin-error');
+
+        if (form && input) {
+          input.focus();
+          form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const entered = input.value.trim();
+            if (entered === correctPIN) {
+              sessionStorage.setItem('pixelcast_admin_authed', 'true');
+              if (window.soundFX) window.soundFX.playApprove();
+              this.handleRoute();
+            } else {
+              if (errDiv) errDiv.classList.remove('hidden');
+              if (window.soundFX) window.soundFX.playReject();
+              input.value = '';
+              input.focus();
+            }
+          });
+        }
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      window.appRouter = new AppRouter();
+    });
+  </script>
+</body>
+</html>

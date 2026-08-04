@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PUSAT KOMANDO | FESTIVAL REWIND IT 2026</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Scanline Overlay Effect */
+        .scanline-overlay::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+            z-index: 2;
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+        }
+        .pixel-border {
+            box-shadow: 
+                4px 0 0 0 #000,
+                -4px 0 0 0 #000,
+                0 4px 0 0 #000,
+                0 -4px 0 0 #000;
+        }
+        .arcade-btn-green {
+            box-shadow: 0 4px 0 0 #14532d;
+        }
+        .arcade-btn-green:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 0 #14532d;
+        }
+        .arcade-btn-red {
+            box-shadow: 0 4px 0 0 #7f1d1d;
+        }
+        .arcade-btn-red:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 0 #7f1d1d;
+        }
+        .arcade-btn-yellow {
+            box-shadow: 0 4px 0 0 #713f12;
+        }
+        .arcade-btn-yellow:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 0 #713f12;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1a1c1c;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #918f99;
+            border: 2px solid #1a1c1c;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary-fixed": "#17173d",
+                      "tertiary": "#ffabf3",
+                      "inverse-on-surface": "#2f3131",
+                      "outline-variant": "#47464e",
+                      "on-secondary-fixed": "#1d1d00",
+                      "surface-container-low": "#1a1c1c",
+                      "on-primary": "#2c2c53",
+                      "inverse-primary": "#5a5a84",
+                      "on-secondary-fixed-variant": "#494900",
+                      "on-error": "#690005",
+                      "surface-bright": "#37393a",
+                      "tertiary-fixed-dim": "#ffabf3",
+                      "secondary-container": "#eaea00",
+                      "surface-container-high": "#282a2b",
+                      "on-error-container": "#ffdad6",
+                      "primary-container": "#1a1a40",
+                      "surface-dim": "#121414",
+                      "secondary-fixed": "#eaea00",
+                      "inverse-surface": "#e2e2e2",
+                      "on-surface": "#e2e2e2",
+                      "outline": "#918f99",
+                      "primary": "#c3c2f2",
+                      "on-primary-container": "#8382af",
+                      "tertiary-fixed": "#ffd7f5",
+                      "on-tertiary-fixed": "#380038",
+                      "on-secondary-container": "#686800",
+                      "surface-container-highest": "#333535",
+                      "on-background": "#e2e2e2",
+                      "secondary": "#ffffff",
+                      "tertiary-container": "#3d003d",
+                      "on-secondary": "#323200",
+                      "on-tertiary": "#5b005b",
+                      "on-surface-variant": "#c8c5cf",
+                      "surface-tint": "#c3c2f2",
+                      "on-tertiary-fixed-variant": "#810081",
+                      "primary-fixed-dim": "#c3c2f2",
+                      "background": "#121414",
+                      "secondary-fixed-dim": "#cdcd00",
+                      "primary-fixed": "#e2dfff",
+                      "surface": "#121414",
+                      "on-tertiary-container": "#ec00ec",
+                      "surface-container": "#1e2020",
+                      "error-container": "#93000a",
+                      "surface-variant": "#333535"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit": "4px",
+                      "gutter": "16px",
+                      "margin-desktop": "40px",
+                      "margin-mobile": "16px",
+                      "container-max": "1280px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": ["Space Grotesk"],
+                      "headline-xl": ["Space Grotesk"],
+                      "label-sm": ["JetBrains Mono"],
+                      "body-lg": ["JetBrains Mono"],
+                      "body-md": ["JetBrains Mono"],
+                      "display-lg": ["Space Grotesk"],
+                      "headline-lg": ["Space Grotesk"]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "headline-xl": ["48px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "label-sm": ["12px", {"lineHeight": "1", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "1.5", "fontWeight": "500"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "display-lg": ["72px", {"lineHeight": "1.1", "letterSpacing": "-0.05em", "fontWeight": "700"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md overflow-hidden selection:bg-tertiary selection:text-on-tertiary">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-gutter h-16 z-50 bg-background border-b-4 border-on-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] fixed top-0">
+<div class="flex items-center gap-6">
+<h1 class="font-headline-lg text-headline-lg italic tracking-tighter text-secondary border-b-4 border-r-4 border-on-background bg-primary px-2 transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none">
+                FESTIVAL REWIND IT 2026
+            </h1>
+<nav class="hidden md:flex gap-8">
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface hover:text-tertiary" href="#">SALURAN</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface hover:text-tertiary" href="#">PEMAIN</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-tertiary underline underline-offset-4" href="#">MISI</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface hover:text-tertiary" href="#">BRANKAS</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary hover:translate-x-[2px] hover:translate-y-[2px] transition-all" data-icon="account_circle">account_circle</button>
+<button class="material-symbols-outlined text-primary hover:translate-x-[2px] hover:translate-y-[2px] transition-all" data-icon="settings">settings</button>
+</div>
+</header>
+<div class="flex h-screen pt-16">
+<!-- SideNavBar (Desktop Only) -->
+<aside class="hidden lg:flex flex-col h-full w-64 p-4 gap-4 bg-surface-container border-r-4 border-on-background shadow-[8px_0px_0px_0px_rgba(0,0,0,1)] z-40">
+<div class="mb-4">
+<p class="font-headline-lg text-headline-lg text-secondary">PEMAIN_01</p>
+<p class="font-label-sm text-label-sm uppercase tracking-widest text-tertiary">LVL 99 ARSITEK</p>
+</div>
+<div class="flex flex-col gap-2">
+<button class="w-full text-left p-3 font-label-sm text-label-sm uppercase tracking-widest bg-tertiary text-on-tertiary border-2 border-on-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:scale-95 transition-transform">
+<span class="flex items-center gap-2"><span class="material-symbols-outlined" data-icon="videogame_asset">videogame_asset</span> PUSAT KOMANDO</span>
+</button>
+<button class="w-full text-left p-3 font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:bg-primary-container transition-colors">
+<span class="flex items-center gap-2"><span class="material-symbols-outlined" data-icon="chat">chat</span> LOG OBROLAN</span>
+</button>
+<button class="w-full text-left p-3 font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:bg-primary-container transition-colors">
+<span class="flex items-center gap-2"><span class="material-symbols-outlined" data-icon="groups">groups</span> MODERATOR</span>
+</button>
+<button class="w-full text-left p-3 font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:bg-primary-container transition-colors">
+<span class="flex items-center gap-2"><span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span> ARSIP</span>
+</button>
+</div>
+<div class="mt-auto">
+<button class="w-full py-4 font-headline-lg-mobile text-headline-lg-mobile text-on-secondary bg-secondary-fixed border-4 border-on-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all">
+                    MULAI PERMAINAN
+                </button>
+<button class="flex items-center gap-2 mt-4 text-error font-label-sm text-label-sm uppercase tracking-widest">
+<span class="material-symbols-outlined" data-icon="power_settings_new">power_settings_new</span> KELUAR
+                </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col md:flex-row overflow-hidden p-6 gap-8 bg-surface-dim scanline-overlay relative">
+<!-- Column 1: Incoming Queue -->
+<section class="flex-1 flex flex-col h-full gap-4 min-w-0">
+<div class="flex items-center justify-between border-b-4 border-on-background pb-2">
+<h2 class="font-headline-xl text-headline-lg uppercase text-primary">ANTREAN MASUK</h2>
+<span class="px-2 py-1 bg-error-container text-on-error-container font-label-sm text-label-sm border-2 border-on-background">42 TERTUNDA</span>
+</div>
+<div class="flex-1 overflow-y-auto pr-2 flex flex-col gap-4 custom-scrollbar">
+<!-- Message Card 1 -->
+<div class="bg-surface-container-high border-4 border-on-background p-4 relative group hover:bg-surface-container-highest transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-sm text-label-sm text-tertiary">USER_NOOB_99</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">14:20:05</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface leading-snug mb-4">
+                            "Halo, apakah siaran panggung utama akan segera dimulai? Saya dengar ada pertunjukan rahasia tengah malam!"
+                        </p>
+<div class="flex gap-2">
+<button class="flex-1 py-2 bg-emerald-600 text-on-primary font-label-sm text-label-sm border-2 border-on-background arcade-btn-green flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[16px]" data-icon="check_circle">check_circle</span> [A] SETUJUI
+                            </button>
+<button class="flex-1 py-2 bg-error text-on-error font-label-sm text-label-sm border-2 border-on-background arcade-btn-red flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[16px]" data-icon="cancel">cancel</span> [X] TOLAK
+                            </button>
+</div>
+</div>
+<!-- Message Card 2 -->
+<div class="bg-surface-container-high border-4 border-on-background p-4 relative group hover:bg-surface-container-highest transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-sm text-label-sm text-tertiary">GLITCH_HUNTER</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">14:21:12</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface leading-snug mb-4">
+                            "Baru saja menemukan hati 8-bit di lounge VIP. Festival ini gila banget."
+                        </p>
+<div class="flex gap-2">
+<button class="flex-1 py-2 bg-emerald-600 text-on-primary font-label-sm text-label-sm border-2 border-on-background arcade-btn-green flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[16px]" data-icon="check_circle">check_circle</span> [A] SETUJUI
+                            </button>
+<button class="flex-1 py-2 bg-error text-on-error font-label-sm text-label-sm border-2 border-on-background arcade-btn-red flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[16px]" data-icon="cancel">cancel</span> [X] TOLAK
+                            </button>
+</div>
+</div>
+<!-- Message Card 3 -->
+<div class="bg-surface-container-high border-4 border-on-background p-4 relative group hover:bg-surface-container-highest transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-sm text-label-sm text-tertiary">NEO_TOK_26</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">14:22:45</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface leading-snug mb-4">
+                            "Bisa minta tambahan warna neon pink di obrolan? #RewindIt2026"
+                        </p>
+<div class="flex gap-2">
+<button class="flex-1 py-2 bg-emerald-600 text-on-primary font-label-sm text-label-sm border-2 border-on-background arcade-btn-green flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[16px]" data-icon="check_circle">check_circle</span> [A] SETUJUI
+                            </button>
+<button class="flex-1 py-2 bg-error text-on-error font-label-sm text-label-sm border-2 border-on-background arcade-btn-red flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[16px]" data-icon="cancel">cancel</span> [X] TOLAK
+                            </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Column 2: Live On Screen -->
+<section class="flex-1 flex flex-col h-full gap-4 min-w-0">
+<div class="flex items-center justify-between border-b-4 border-on-background pb-2">
+<h2 class="font-headline-xl text-headline-lg uppercase text-secondary-fixed">SEDANG TAYANG</h2>
+<span class="flex items-center gap-2">
+<span class="w-3 h-3 bg-error rounded-full animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-on-surface">MENYIARKAN</span>
+</span>
+</div>
+<div class="flex-1 bg-black border-4 border-on-background p-6 flex flex-col gap-6 relative overflow-hidden">
+<!-- Background Decorative Element -->
+<div class="absolute top-4 right-4 opacity-20 pointer-events-none">
+<span class="material-symbols-outlined text-display-lg text-tertiary animate-spin" style="animation-duration: 10s;">star</span>
+</div>
+<!-- Live Message 1 -->
+<div class="flex flex-col gap-2 border-l-4 border-secondary-fixed pl-4">
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-secondary-fixed">@CYBER_PUNK:</span>
+<button class="ml-auto p-1 bg-secondary-fixed text-on-secondary border-2 border-on-background arcade-btn-yellow flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-[10px] font-bold">SOROT BINTANG</span>
+</button>
+</div>
+<p class="font-headline-lg-mobile text-headline-lg-mobile text-white uppercase italic">
+                            SUASANANYA BENAR-BENAR TAK TERTANDINGI HARI INI. SIAP UNTUK PENAMPIL UTAMA!
+                        </p>
+</div>
+<!-- Live Message 2 -->
+<div class="flex flex-col gap-2 border-l-4 border-tertiary pl-4 opacity-80">
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-tertiary">@RETRO_LOVER:</span>
+<button class="ml-auto p-1 bg-surface-container text-on-surface border-2 border-on-background hover:bg-secondary-fixed hover:text-on-secondary transition-all flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]" data-icon="star">star</span>
+<span class="text-[10px] font-bold">SOROT BINTANG</span>
+</button>
+</div>
+<p class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface uppercase italic">
+                            APAKAH ADA YANG TAHU DI MANA WORKSHOP SENI PIXEL?
+                        </p>
+</div>
+<div class="mt-auto">
+<!-- Loading Bar Simulation -->
+<p class="font-label-sm text-label-sm uppercase mb-2 text-on-surface-variant">KAPASITAS BUFFER LAYAR</p>
+<div class="h-6 w-full border-2 border-on-background flex gap-1 p-1">
+<div class="h-full w-1/10 bg-tertiary"></div>
+<div class="h-full w-1/10 bg-tertiary"></div>
+<div class="h-full w-1/10 bg-tertiary"></div>
+<div class="h-full w-1/10 bg-tertiary"></div>
+<div class="h-full w-1/10 bg-tertiary"></div>
+<div class="h-full w-1/10 bg-tertiary"></div>
+<div class="h-full w-1/10 bg-surface-variant"></div>
+<div class="h-full w-1/10 bg-surface-variant"></div>
+<div class="h-full w-1/10 bg-surface-variant"></div>
+<div class="h-full w-1/10 bg-surface-variant"></div>
+</div>
+</div>
+</div>
+<!-- Live Preview / Camera Feed Placeholder -->
+<div class="h-48 border-4 border-on-background relative overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Panggung synthwave futuristik di festival malam hari, dengan layar LED 8-bit besar menampilkan pola piksel, bayangan kerumunan massa, lampu sorot neon pink dan cyan membelah udara berkabut gelap, estetika arcade 1990-an." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBDNK-9DnbgybpDSVIBYqFIJBjr8XEdeH-D8kFKM7IcjAhtVT7Z0SPHrWOQJchl_b1lhRBj_rdVWDK8BN79HP0fv7Znuqd8CD9FbFWZY-cXo4iY8ZqZwtIjjnnPGHPYfw8NpJ9hiRhZbcMQJleu5I19tHOVPwro15xJMau_UpYZRVLm6e43EsvuVgvjPUhUq4kQGlVNMWIhESvYeOSkwiX35CJEvoDg10GrewvrUms4dnLW7HWZnSiQ')"></div>
+<div class="absolute inset-0 bg-black/40"></div>
+<div class="absolute top-2 left-2 flex items-center gap-2 bg-black/80 px-2 py-1 border border-on-background">
+<span class="w-2 h-2 bg-error rounded-full animate-pulse"></span>
+<span class="font-label-sm text-[10px] text-white">KAMERA_LANGSUNG_04</span>
+</div>
+<div class="absolute bottom-0 w-full h-1 bg-tertiary/50"></div>
+</div>
+</section>
+</main>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full h-20 flex justify-around items-center px-4 pb-safe bg-primary-container border-t-4 border-on-background shadow-[0px_-4px_0px_0px_rgba(0,0,0,1)] z-50">
+<button class="flex flex-col items-center justify-center text-on-primary-container hover:text-secondary transition-colors">
+<span class="material-symbols-outlined" data-icon="forum">forum</span>
+<span class="font-label-sm text-label-sm font-bold">OBROLAN</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-secondary text-on-secondary border-2 border-on-background scale-110 -translate-y-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-label-sm text-label-sm font-bold">PETA</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-primary-container hover:text-secondary transition-colors">
+<span class="material-symbols-outlined" data-icon="storefront">storefront</span>
+<span class="font-label-sm text-label-sm font-bold">TOKO</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-primary-container hover:text-secondary transition-colors">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+<span class="font-label-sm text-label-sm font-bold">MENU</span>
+</button>
+</nav>
+<!-- Floating RPG Dialog (Contextual UI) -->
+<div class="fixed bottom-24 right-8 w-72 bg-white border-4 border-black p-4 z-50 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] animate-bounce" style="animation-duration: 3s;">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-sm text-[10px] text-black/50 uppercase">Pemberitahuan Sistem</span>
+<span class="material-symbols-outlined text-black text-[16px] cursor-pointer" data-icon="close">close</span>
+</div>
+<p class="text-black font-body-md text-sm leading-tight">
+            Volume tinggi terdeteksi di SALURAN_03. Filter otomatis aktif. <span class="inline-block w-2 h-4 bg-black animate-pulse align-middle"></span>
+</p>
+<span class="absolute bottom-1 right-2 material-symbols-outlined text-black text-sm animate-bounce" data-icon="arrow_drop_down">arrow_drop_down</span>
+</div>
+<!-- Decorative Stars -->
+<div class="fixed top-24 left-1/2 -translate-x-1/2 pointer-events-none opacity-30">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="star">star</span>
+</div>
+<script>
+        // Micro-interactions for buttons
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('mousedown', () => {
+                btn.style.transform = 'translate(2px, 2px)';
+            });
+            btn.addEventListener('mouseup', () => {
+                btn.style.transform = '';
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = '';
+            });
+        });
+
+        // Simple mock for "Approve/Reject" removal
+        document.querySelectorAll('.arcade-btn-green, .arcade-btn-red').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const card = this.closest('.bg-surface-container-high');
+                if (card) {
+                    card.style.transition = 'all 0.3s ease';
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateX(-20px)';
+                    setTimeout(() => card.remove(), 300);
+                }
+            });
+        });
+
+        // Close system notice
+        document.querySelector('.material-symbols-outlined[data-icon="close"]').addEventListener('click', function() {
+            this.closest('.fixed').remove();
+        });
+    </script>
+</body></html>
