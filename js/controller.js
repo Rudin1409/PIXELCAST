@@ -296,6 +296,29 @@ class ControllerView {
         nameInput.focus();
         return;
       }
+
+      // Cek nama duplikat — apakah nama sudah dipakai HP/perangkat lain?
+      if (window.retroStore && window.retroStore.isNameTaken(val)) {
+        // Tampilkan peringatan nama duplikat
+        let errEl = nameModal.querySelector('#name-taken-error');
+        if (!errEl) {
+          errEl = document.createElement('div');
+          errEl.id = 'name-taken-error';
+          errEl.className = 'text-xs font-mono font-bold text-error bg-red-950/80 border-2 border-red-500 p-2.5 mt-2 text-center animate-[popIn_0.2s_ease-out]';
+          nameInput.parentElement.after(errEl);
+        }
+        errEl.innerHTML = '⚠️ NAMA <span class="text-yellow-neon">"' + val + '"</span> SUDAH DIPAKAI PEMAIN LAIN!<br/>Silakan pilih nama yang berbeda.';
+        errEl.classList.remove('hidden');
+        nameInput.value = '';
+        nameInput.focus();
+        if (window.soundFX) window.soundFX.playReject();
+        return;
+      }
+
+      // Hapus error duplikat jika ada
+      const errRemove = nameModal.querySelector('#name-taken-error');
+      if (errRemove) errRemove.remove();
+
       this.username = val;
       localStorage.setItem('retro_player_name', val);
       

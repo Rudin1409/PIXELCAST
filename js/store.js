@@ -238,6 +238,19 @@ class RetroStore {
     return null;
   }
 
+  // Cek apakah nama sudah dipakai oleh perangkat/HP lain
+  isNameTaken(username) {
+    if (!username) return false;
+    const cleanName = username.trim().toUpperCase();
+    const myDeviceId = this.getDeviceId();
+    
+    // Cek di daftar pemain aktif lokal
+    const taken = this.activePlayers.some(p => 
+      p.username.toUpperCase() === cleanName && p.deviceId !== myDeviceId
+    );
+    return taken;
+  }
+
   registerPlayer(username, avatar) {
     const deviceId = this.getDeviceId();
     const cleanName = (username || 'ANONYMOUS_PLAYER').trim();

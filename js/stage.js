@@ -48,18 +48,23 @@ class MainStageView {
             <div class="absolute inset-0 scanline-overlay z-0 opacity-20"></div>
 
             <!-- QR Code Section -->
-            <div class="z-10 w-full text-center">
-              <h2 class="font-headline text-base md:text-lg text-secondary-fixed mb-2.5 tracking-tight leading-none bg-on-background text-background inline-block px-3 py-1.5 border-r-4 border-b-4 border-tertiary font-bold uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                PINDAI UNTUK MAIN!
-              </h2>
-              <div class="bg-secondary p-3 pixel-border brutal-shadow inline-block">
-                <div id="qr-container" class="w-36 h-36 md:w-40 md:h-40 bg-white p-2 flex items-center justify-center relative">
+            <div class="z-10 w-full flex flex-col items-center gap-3">
+              <div class="w-full bg-yellow-neon text-black py-2 px-3 border-b-4 border-r-4 border-on-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                <h2 class="font-headline text-sm md:text-base font-extrabold uppercase tracking-wide text-center leading-tight flex items-center justify-center gap-1.5">
+                  <span class="material-symbols-outlined text-base">qr_code_scanner</span>
+                  PINDAI UNTUK MAIN!
+                </h2>
+              </div>
+              <div class="bg-white p-2.5 border-4 border-on-background shadow-[6px_6px_0px_0px_rgba(255,171,243,1)]">
+                <div id="qr-container" class="w-32 h-32 md:w-36 md:h-36 lg:w-40 lg:h-40 bg-white flex items-center justify-center relative">
                   <!-- QR Code Image -->
                 </div>
               </div>
-              <p class="text-[10px] font-label-sm text-cyan-neon mt-2 tracking-wider font-bold uppercase">
-                SCAN QR DENGAN HP UNTUK CHAT!
-              </p>
+              <div class="w-full bg-black border-2 border-cyan-neon py-1.5 px-2">
+                <p class="text-[10px] md:text-xs font-label-sm text-cyan-neon tracking-wider font-bold uppercase text-center leading-tight animate-pulse">
+                  📱 SCAN QR DENGAN HP UNTUK CHAT!
+                </p>
+              </div>
             </div>
 
             <!-- Real-time Connected Players Panel -->
