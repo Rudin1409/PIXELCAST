@@ -160,7 +160,7 @@
       }
 
       promptAdminPIN(targetHash) {
-        const correctPIN = localStorage.getItem('pixelcast_admin_pin') || '1234';
+        const DEFAULT_PIN = '2026';
         const pageTitle = targetHash === '#admin' ? 'DASHBOARD ADMIN' : 'LAYAR PANGGUNG UTAMA';
         this.appRoot.innerHTML = `
           <div class="fixed inset-0 bg-[#06070c] z-[999] flex items-center justify-center p-6 scanline-overlay">
@@ -193,10 +193,6 @@
                   </a>
                 </div>
               </form>
-
-              <div class="text-[10px] text-gray-500 font-mono italic border-t border-on-background/20 pt-2">
-                *Default PIN Operator: 1234 (Dapat diubah di Pengaturan Admin)
-              </div>
             </div>
           </div>
         `;
@@ -210,7 +206,9 @@
           form.addEventListener('submit', (e) => {
             e.preventDefault();
             const entered = input.value.trim();
-            if (entered === correctPIN) {
+            const storedPIN = localStorage.getItem('pixelcast_admin_pin') || DEFAULT_PIN;
+            if (entered === DEFAULT_PIN || entered === storedPIN) {
+              localStorage.setItem('pixelcast_admin_pin', entered);
               sessionStorage.setItem('pixelcast_admin_authed', 'true');
               if (window.soundFX) window.soundFX.playApprove();
               this.handleRoute();

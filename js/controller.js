@@ -14,6 +14,9 @@ class ControllerView {
       this.username = session.username;
       this.selectedAvatar = session.avatar || 'star';
     }
+    if (!this.username) {
+      this.username = localStorage.getItem('retro_player_name') || '';
+    }
     const showNameModal = !this.username;
 
     container.innerHTML = `
@@ -209,12 +212,28 @@ class ControllerView {
     const logContainer = container.querySelector('#terminal-chat-log');
     if (!logContainer) return;
 
-    const messages = window.retroStore.messages || [];
+    // Ambil username aktif pemain ini
+    const currentUsername = (this.username || localStorage.getItem('retro_player_name') || '').trim().toUpperCase();
+    const allMessages = window.retroStore.messages || [];
+
+    // Filter HANYA pesan milik user ini sendiri
+    const messages = currentUsername
+      ? allMessages.filter(msg => msg && msg.user && msg.user.trim().toUpperCase() === currentUsername)
+      : [];
+
+    if (!currentUsername) {
+      logContainer.innerHTML = `
+        <div class="text-[10px] text-tertiary border-b border-tertiary/30 pb-1 font-mono italic">
+          [SYSTEM]: SILAKAN SET NAMA PEMAIN TERLEBIH DAHULU!
+        </div>
+      `;
+      return;
+    }
 
     if (messages.length === 0) {
       logContainer.innerHTML = `
         <div class="text-[10px] text-tertiary border-b border-tertiary/30 pb-1 font-mono italic">
-          [SYSTEM]: ARENA CHAT ACTIVE_ BELUM ADA PESAN. KETIK PESAN PERTAMA!
+          [SYSTEM]: ARENA CHAT ACTIVE_ BELUM ADA PESAN ANDA. KETIK PESAN PERTAMA!
         </div>
       `;
       return;
@@ -230,7 +249,6 @@ class ControllerView {
     };
 
     logContainer.innerHTML = messages.map(msg => {
-      const isMine = this.username && msg.user.toUpperCase() === this.username.toUpperCase();
       const theme = AVATAR_THEMES[msg.avatar] || AVATAR_THEMES['star'];
       const statusBadge = msg.status === 'approved' 
         ? '<span class="text-emerald-400 font-bold text-[9px] px-1 bg-emerald-950/80 border border-emerald-500">[ACC]</span>'
@@ -238,9 +256,7 @@ class ControllerView {
             ? '<span class="text-red-400 font-bold text-[9px] px-1 bg-red-950/80 border border-red-500">[DITOLAK SENSOR]</span>'
             : '<span class="text-yellow-neon font-bold text-[9px] px-1 bg-yellow-950/80 border border-yellow-500">[PENDING]</span>');
 
-      const deleteBtnHtml = isMine
-        ? `<button data-delete-id="${msg.id}" class="btn-delete-own-msg text-[9px] text-error hover:text-white bg-red-950/60 border border-red-500 px-1 py-0.2 rounded font-bold uppercase transition-colors">✖ HAPUS</button>`
-        : '';
+      const deleteBtnHtml = `<button data-delete-id="${msg.id}" class="btn-delete-own-msg text-[9px] text-error hover:text-white bg-red-950/60 border border-red-500 px-1 py-0.2 rounded font-bold uppercase transition-colors">✖ HAPUS</button>`;
 
       return `
         <div class="flex flex-col gap-0.5 border-b border-on-background/20 pb-1.5 text-[11px] font-mono">
