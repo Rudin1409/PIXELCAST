@@ -45,7 +45,22 @@ class RetroStore {
           this.saveToStorage();
           this.notify('message_approved', msg);
         }
+      } else if (type === 'UNAPPROVE_MESSAGE') {
+        const msg = this.messages.find(m => m.id === data);
+        if (msg) {
+          msg.status = 'pending';
+          if (this._spotlight && this._spotlight.id === data) {
+            this._spotlight = null;
+            this.notify('spotlight_changed', null);
+          }
+          this.saveToStorage();
+          this.notify('message_unapproved', data);
+        }
       } else if (type === 'REJECT_MESSAGE') {
+        if (this._spotlight && this._spotlight.id === data) {
+          this._spotlight = null;
+          this.notify('spotlight_changed', null);
+        }
         this.messages = this.messages.filter(m => m.id !== data);
         this.saveToStorage();
         this.notify('message_rejected', data);
@@ -125,6 +140,10 @@ class RetroStore {
             this.userCount = Math.max(1, firebasePlayers.length);
             this.notify('players_updated', this.activePlayers);
           }
+        },
+        (firebaseSpotlight) => {
+          this._spotlight = firebaseSpotlight;
+          this.notify('spotlight_changed', this._spotlight);
         }
       );
     }
@@ -461,10 +480,37 @@ class RetroStore {
     if (window.soundFX) window.soundFX.playApprove();
   }
 
+  unapproveMessage(id) {
+    const msg = this.messages.find(m => m.id === id);
+    if (msg) {
+      msg.status = 'pending';
+      if (this._spotlight && this._spotlight.id === id) {
+        this.spotlightOff();
+      }
+      this.saveToStorage();
+      this.notify('message_unapproved', id);
+      this.notify();
+
+      this.channel.postMessage({ type: 'UNAPPROVE_MESSAGE', data: id });
+
+      if (window.firebaseSync && window.firebaseSync.isInitialized) {
+        window.firebaseSync.unapproveMessage(id);
+      }
+      if (this.socket && this.socket.connected) {
+        this.socket.emit('unapprove_message', id);
+      }
+    }
+    if (window.soundFX) window.soundFX.playClick();
+  }
+
   rejectMessage(id) {
+    if (this._spotlight && this._spotlight.id === id) {
+      this.spotlightOff();
+    }
     this.messages = this.messages.filter(m => m.id !== id);
     this.saveToStorage();
     this.notify('message_rejected', id);
+    this.notify();
 
     this.channel.postMessage({ type: 'REJECT_MESSAGE', data: id });
 
@@ -493,8 +539,9 @@ class RetroStore {
 
     this.channel.postMessage({ type: 'SPOTLIGHT_ON', data: this._spotlight });
 
-    if (window.firebaseSync && window.firebaseSync.isInitialized && msg) {
-      window.firebaseSync.approveMessage(msgData.id);
+    if (window.firebaseSync && window.firebaseSync.isInitialized) {
+      if (msg) window.firebaseSync.approveMessage(msgData.id);
+      window.firebaseSync.setSpotlight(this._spotlight);
     }
 
     if (window.soundFX) window.soundFX.playBoom();
@@ -505,6 +552,10 @@ class RetroStore {
     this.notify('spotlight_changed', null);
 
     this.channel.postMessage({ type: 'SPOTLIGHT_OFF', data: null });
+
+    if (window.firebaseSync && window.firebaseSync.isInitialized) {
+      window.firebaseSync.setSpotlight(null);
+    }
 
     if (window.soundFX) window.soundFX.playClick();
   }

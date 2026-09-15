@@ -690,15 +690,42 @@ class AdminView {
       const isSpotlit = (id) => currentSpotlight && currentSpotlight.id === id;
 
       approvedItems.innerHTML = approvedMsgs.map(msg => `
-        <div class="flex flex-col gap-2 border-l-4 ${isSpotlit(msg.id) ? 'border-yellow-neon bg-yellow-neon/20 p-3' : 'border-tertiary p-2'} transition-all">
-          <div class="flex items-center gap-2">
-            <span class="font-label-sm text-xs font-bold ${isSpotlit(msg.id) ? 'text-yellow-neon' : 'text-tertiary'}">@${msg.user}:</span>
-            <button data-action="spotlight" data-id="${msg.id}" class="ml-auto px-3 py-1.5 ${isSpotlit(msg.id) ? 'bg-error text-white animate-pulse' : 'bg-yellow-neon text-black hover:bg-white'} border-2 border-on-background flex items-center gap-1 font-bold text-xs uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:scale-95">
+        <div class="flex flex-col gap-2.5 bg-[#0c0d14] border-2 ${isSpotlit(msg.id) ? 'border-yellow-neon bg-yellow-neon/15 shadow-[0_0_15px_rgba(234,234,0,0.3)]' : 'border-on-background/70'} p-3.5 relative hover:border-cyan-neon transition-all shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+          <!-- Header: User Avatar & Name + Timestamp -->
+          <div class="flex justify-between items-center pb-1.5 border-b border-on-background/20">
+            <span class="font-label-sm text-xs font-bold ${isSpotlit(msg.id) ? 'text-yellow-neon' : 'text-cyan-neon'} flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm text-yellow-neon">${msg.avatar || 'star'}</span>
+              @${msg.user}:
+            </span>
+            <div class="flex items-center gap-2">
+              ${isSpotlit(msg.id) ? '<span class="text-[9px] font-bold text-black bg-yellow-neon px-1.5 py-0.5 animate-pulse uppercase">★ DISOROT ★</span>' : ''}
+              <span class="font-label-sm text-[10px] text-on-surface-variant font-mono">${msg.timestamp || ''}</span>
+            </div>
+          </div>
+
+          <!-- Message Body -->
+          <p class="font-headline text-base text-white uppercase italic font-bold leading-snug">"${msg.text}"</p>
+
+          <!-- Action Toolbar: SOROT, TARIK KEMBALI, HAPUS -->
+          <div class="flex flex-wrap gap-2 pt-1 border-t border-on-background/20 mt-1">
+            <!-- 1. Tombol Sorot Panggung -->
+            <button data-action="spotlight" data-id="${msg.id}" class="flex-1 py-1.5 px-2.5 ${isSpotlit(msg.id) ? 'bg-error text-white animate-pulse' : 'bg-yellow-neon hover:bg-yellow-400 text-black'} border-2 border-on-background flex items-center justify-center gap-1 font-bold text-xs uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:scale-95 transition-all">
               <span class="material-symbols-outlined text-sm">${isSpotlit(msg.id) ? 'visibility_off' : 'star'}</span>
               <span>${isSpotlit(msg.id) ? '✖ MATIKAN SOROTAN' : '★ SOROT KE PANGGUNG'}</span>
             </button>
+
+            <!-- 2. Tombol Tarik (Turunkan dari Tayang / Batal Tayang) -->
+            <button data-action="unapprove" data-id="${msg.id}" class="py-1.5 px-3 bg-surface-container-high hover:bg-surface-variant text-yellow-neon hover:text-white border-2 border-yellow-neon/80 flex items-center justify-center gap-1 font-bold text-xs uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:scale-95 transition-all" title="Tarik pesan dari panggung kembali ke Antrean Masuk">
+              <span class="material-symbols-outlined text-sm">undo</span>
+              <span>↩ TARIK</span>
+            </button>
+
+            <!-- 3. Tombol Hapus Langsung -->
+            <button data-action="reject" data-id="${msg.id}" class="py-1.5 px-2.5 bg-red-950/80 hover:bg-red-600 text-red-300 hover:text-white border-2 border-red-500 flex items-center justify-center gap-1 font-bold text-xs uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:scale-95 transition-all" title="Hapus pesan permanen">
+              <span class="material-symbols-outlined text-sm">delete</span>
+              <span>✖ HAPUS</span>
+            </button>
           </div>
-          <p class="font-headline text-base text-white uppercase italic font-bold">"${msg.text}"</p>
         </div>
       `).join('');
     }
@@ -711,8 +738,13 @@ class AdminView {
 
         if (action === 'approve') {
           window.retroStore.approveMessage(id);
+          this.updateUI();
+        } else if (action === 'unapprove') {
+          window.retroStore.unapproveMessage(id);
+          this.updateUI();
         } else if (action === 'reject') {
           window.retroStore.rejectMessage(id);
+          this.updateUI();
         } else if (action === 'spotlight') {
           const spotlight = window.retroStore.getSpotlight();
           if (spotlight && spotlight.id === id) {

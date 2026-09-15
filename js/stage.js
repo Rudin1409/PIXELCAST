@@ -226,6 +226,16 @@ class MainStageView {
       if (eventType === 'message_approved' && payload && payload.status === 'approved') {
         this.historySpawnedIds.add(payload.id);
         this.spawnSingleMessage(payload);
+      } else if (eventType === 'message_unapproved' || eventType === 'message_rejected') {
+        const id = payload;
+        this.activeMessageIds.delete(id);
+        this.historySpawnedIds.delete(id);
+        const bubble = this.container.querySelector(`[data-msg-id="${id}"]`);
+        if (bubble) bubble.remove();
+        const curSpot = window.retroStore.getSpotlight();
+        if (curSpot && curSpot.id === id) {
+          window.retroStore.spotlightOff();
+        }
       } else if (eventType === 'players_updated') {
         this.renderActivePlayersList();
         this.updatePlayerCapacityBar();
@@ -385,6 +395,7 @@ class MainStageView {
 
     const bubble = document.createElement('div');
     bubble.className = 'animate-float absolute z-20 cursor-pointer group';
+    bubble.setAttribute('data-msg-id', msg.id);
     
     // POSISI X ORGANIK SEMI-ACAK (Tidak kaku berurutan ke samping, tapi tetap teratur & tidak bertumpuk)
     const targetX = this.getSmartRandomXPosition();

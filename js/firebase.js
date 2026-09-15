@@ -18,7 +18,7 @@ class FirebaseSyncService {
   }
 
   // Inisialisasi Firebase & Firestore Listeners secara langsung
-  init(onDataUpdate, onPlayersUpdate) {
+  init(onDataUpdate, onPlayersUpdate, onSpotlightUpdate) {
     if (typeof firebase === 'undefined') {
       console.warn('⚠️ Firebase SDK belum dimuat di browser.');
       return false;
@@ -69,6 +69,22 @@ class FirebaseSyncService {
         if (onPlayersUpdate) onPlayersUpdate(activePlayers);
       }, (error) => {
         console.warn('⚠️ Firestore players listener notice:', error.message);
+      });
+
+      // 3. Real-time Spotlight Listener (Sinkronisasi Sorotan Panggung Antar Perangkat)
+      this.db.collection('system').doc('spotlight').onSnapshot((docSnap) => {
+        if (docSnap.exists) {
+          const data = docSnap.data();
+          if (data && data.active && data.message) {
+            if (onSpotlightUpdate) onSpotlightUpdate(data.message);
+          } else {
+            if (onSpotlightUpdate) onSpotlightUpdate(null);
+          }
+        } else {
+          if (onSpotlightUpdate) onSpotlightUpdate(null);
+        }
+      }, (error) => {
+        console.warn('ℹ️ Firestore spotlight listener notice:', error.message);
       });
 
       return true;
@@ -131,6 +147,16 @@ class FirebaseSyncService {
     }
   }
 
+  // Tarik pesan kembali ke status pending (tidak tayang) di Firestore
+  async unapproveMessage(id) {
+    if (!this.isInitialized || !this.db) return;
+    try {
+      await this.db.collection('messages').doc(id).update({ status: 'pending' });
+    } catch (e) {
+      console.warn('ℹ️ Firestore unapproveMessage notice:', e.message);
+    }
+  }
+
   // Reject / hapus pesan di Firestore
   async rejectMessage(id) {
     if (!this.isInitialized || !this.db) return;
@@ -138,6 +164,28 @@ class FirebaseSyncService {
       await this.db.collection('messages').doc(id).delete();
     } catch (e) {
       console.warn('ℹ️ Firestore rejectMessage notice:', e.message);
+    }
+  }
+
+  // Set / Sinkronisasi Spotlight di Cloud Firestore
+  async setSpotlight(spotlightData) {
+    if (!this.isInitialized || !this.db) return;
+    try {
+      if (spotlightData) {
+        await this.db.collection('system').doc('spotlight').set({
+          active: true,
+          message: spotlightData,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      } else {
+        await this.db.collection('system').doc('spotlight').set({
+          active: false,
+          message: null,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      }
+    } catch (e) {
+      console.warn('ℹ️ Firestore setSpotlight notice:', e.message);
     }
   }
 
