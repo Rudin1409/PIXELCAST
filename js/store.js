@@ -387,8 +387,10 @@ class RetroStore {
       return duplicate;
     }
 
+    const deviceId = this.getDeviceId();
     const newMessage = {
       id: 'msg-' + now + '-' + Math.floor(Math.random() * 1000),
+      deviceId: deviceId,
       user: formattedUser,
       avatar: avatar || 'star',
       text: censoredText,
@@ -409,7 +411,7 @@ class RetroStore {
     this.channel.postMessage({ type: 'ADD_MESSAGE', data: newMessage });
 
     if (window.firebaseSync && window.firebaseSync.isInitialized) {
-      window.firebaseSync.sendMessage(user, censoredText, avatar, hasProfanity, newMessage.flagReason, newMessage.status, text);
+      window.firebaseSync.sendMessage(user, censoredText, avatar, hasProfanity, newMessage.flagReason, newMessage.status, text, deviceId);
     }
 
     if (this.socket && this.socket.connected) {

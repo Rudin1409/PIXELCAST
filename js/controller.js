@@ -192,7 +192,7 @@ class ControllerView {
             <p class="text-[11px] text-on-surface-variant font-label-sm leading-relaxed">
               Pesan Anda telah masuk ke antrean dan akan segera melayang di layar proyektor panggung!
             </p>
-            <button id="btn-close-overlay" class="font-label-sm text-xs bg-cyan-neon text-on-background px-5 py-2.5 border-3 border-on-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-1 active:translate-y-1 transition-all uppercase font-bold">
+            <button id="btn-close-overlay" class="font-label-sm text-xs bg-cyan-neon text-black font-extrabold px-6 py-3 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-cyan-300 active:shadow-none active:translate-x-1 active:translate-y-1 transition-all uppercase cursor-pointer">
               KEMBALI KE GAME
             </button>
           </div>
@@ -212,16 +212,23 @@ class ControllerView {
     const logContainer = container.querySelector('#terminal-chat-log');
     if (!logContainer) return;
 
-    // Ambil username aktif pemain ini
-    const currentUsername = (this.username || localStorage.getItem('retro_player_name') || '').trim().toUpperCase();
+    // Ambil identitas pemain di HP ini (username dan deviceId)
+    const session = (window.retroStore && window.retroStore.getUserSession) ? window.retroStore.getUserSession() : null;
+    const currentUsername = (this.username || (session ? session.username : '') || localStorage.getItem('retro_player_name') || '').trim().toUpperCase();
+    const myDeviceId = window.retroStore ? window.retroStore.getDeviceId() : localStorage.getItem('pixelcast_device_id');
     const allMessages = window.retroStore.messages || [];
 
-    // Filter HANYA pesan milik user ini sendiri
-    const messages = currentUsername
-      ? allMessages.filter(msg => msg && msg.user && msg.user.trim().toUpperCase() === currentUsername)
-      : [];
+    // FILTER SANGAT KETAT: HANYA pesan yang dikirim oleh peserta HP ini
+    const messages = allMessages.filter(msg => {
+      if (!msg) return false;
+      // 1. Cocokkan ID perangkat jika tersedia
+      if (myDeviceId && msg.deviceId && msg.deviceId === myDeviceId) return true;
+      // 2. Cocokkan username pemain jika nama terisi
+      if (currentUsername && msg.user && msg.user.trim().toUpperCase() === currentUsername) return true;
+      return false;
+    });
 
-    if (!currentUsername) {
+    if (!currentUsername && messages.length === 0) {
       logContainer.innerHTML = `
         <div class="text-[10px] text-tertiary border-b border-tertiary/30 pb-1 font-mono italic">
           [SYSTEM]: SILAKAN SET NAMA PEMAIN TERLEBIH DAHULU!
@@ -233,7 +240,7 @@ class ControllerView {
     if (messages.length === 0) {
       logContainer.innerHTML = `
         <div class="text-[10px] text-tertiary border-b border-tertiary/30 pb-1 font-mono italic">
-          [SYSTEM]: ARENA CHAT ACTIVE_ BELUM ADA PESAN ANDA. KETIK PESAN PERTAMA!
+          [SYSTEM]: ARENA CHAT ACTIVE_ BELUM ADA PESAN ANDA (${currentUsername || 'PEMAIN'}). KETIK PESAN PERTAMA!
         </div>
       `;
       return;

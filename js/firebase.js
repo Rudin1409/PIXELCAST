@@ -44,6 +44,7 @@ class FirebaseSyncService {
             avatar: data.avatar,
             text: data.text,
             status: data.status,
+            deviceId: data.deviceId || null,
             timestamp: data.timeStr || new Date().toLocaleTimeString('id-ID', { hour12: false }),
             highlighted: !!data.highlighted,
             flagged: !!data.flagged,
@@ -112,7 +113,7 @@ class FirebaseSyncService {
   }
 
   // Kirim pesan baru ke Firestore dengan status & text yang sinkron 1-to-1
-  async sendMessage(user, text, avatar, flagged = false, flagReason = null, status = 'pending', originalText = null) {
+  async sendMessage(user, text, avatar, flagged = false, flagReason = null, status = 'pending', originalText = null, deviceId = null) {
     if (!this.isInitialized || !this.db) return null;
     try {
       const docRef = await this.db.collection('messages').add({
@@ -121,6 +122,7 @@ class FirebaseSyncService {
         text: text,
         originalText: originalText || text,
         status: status,
+        deviceId: deviceId || null,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         timeStr: new Date().toLocaleTimeString('id-ID', { hour12: false }),
         highlighted: false,
